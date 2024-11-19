@@ -1,3 +1,4 @@
+'use client'
 import Image from "next/image";
 import Navbar from "./components/global/navbar";
 import { ContainerScroll } from "./components/global/custom-scroll-animation";
@@ -8,189 +9,245 @@ import { LampComponent } from "./components/global/lamp";
 import { InfiniteMovingCards } from "./components/global/infinite-moving-cards";
 import { HeroParallax } from "./components/global/HeroParallax";
 import { clients, products } from "@/lib/constants";
-
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 export default function Home() {
+  const [activeSlide, setActiveSlide] = useState(0);
+
+  const slides = [
+    {
+      id: 1,
+      title: "Manage Orders",
+      description: "Track and manage customer orders in real-time.",
+      secondaryDescription: "Get a detailed view of every table and its orders.",
+      imageUrl: "/1.png",  // Updated image link for slide 1
+    },
+    {
+      id: 2,
+      title: "Inventory Management",
+      description: "Efficiently track your inventory.",
+      secondaryDescription: "Ensure stock levels are optimized and always up-to-date.",
+      imageUrl: "/2.png",  // Updated image link for slide 2
+    },
+    {
+      id: 3,
+      title: "Customer Feedback",
+      description: "Capture customer feedback and reviews.",
+      secondaryDescription: "Improve your services based on customer insights.",
+      imageUrl: "/3.png",  // Updated image link for slide 3
+    },
+    {
+      id: 4,
+      title: "Staff Management",
+      description: "Manage staff schedules and assign roles.",
+      secondaryDescription: "Track hours worked and assign tasks to employees.",
+      imageUrl: "/4.png",  // Updated image link for slide 4
+    },
+    {
+      id: 5,
+      title: "Billing & Payments",
+      description: "Generate bills and accept payments digitally.",
+      secondaryDescription: "Streamline the checkout process with easy payment options.",
+      imageUrl: "/5.png",  // Updated image link for slide 5
+    },
+    {
+      id: 6,
+      title: "Analytics Dashboard",
+      description: "Get detailed analytics on sales and operations.",
+      secondaryDescription: "Use insights to improve business performance.",
+      imageUrl: "/6.png",  // Updated image link for slide 6
+    },
+  ];
+
+  const handleNext = () => {
+
+  };
+
+  const handlePrev = () => {
+
+  };
+
+  const setSlide = (index: number) => {
+    setActiveSlide(index);
+  };
+
+  useEffect(() => {
+    const setDiameter = () => {
+      const slider = document.querySelector(".slider");
+      const widthSlider = slider?.clientWidth ?? 0;
+      const heightSlider = slider?.clientHeight ?? 0;
+      const diameter = Math.sqrt(Math.pow(widthSlider, 2) + Math.pow(heightSlider, 2));
+      document.documentElement.style.setProperty("--diameter", `${diameter}px`);
+    };
+    setDiameter();
+    window.addEventListener("resize", setDiameter);
+    return () => window.removeEventListener("resize", setDiameter);
+  }, []);
+
   return (
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
+    <main className="min-h-screen bg-darkslategray text-white">
        <Navbar/>
-       <section className="h-screen w-full  bg-neutral-950 rounded-md  !overflow-visible relative flex flex-col items-center  antialiased">
-        <div className="absolute inset-0  h-full w-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,#000_35%,#223_100%)]"></div>
-        <div className="flex flex-col mt-[-100px] md:mt-[-50px]">
-          <ContainerScroll
-            titleComponent={
-              <div className="flex items-center flex-col">
-                <Button
-                  size={'lg'}
-                  className="p-8 mb-8 md:mb-0 text-2xl w-full sm:w-fit border-t-2 rounded-full border-[#4D4D4D] bg-[#1F1F1F] hover:bg-white group transition-all flex items-center justify-center gap-4 hover:shadow-xl hover:shadow-neutral-500 duration-500"
+      <header className="relative z-10 flex items-center justify-between w-full max-w-screen-xl p-6 mx-auto">
+        <figure className="logo">
+          <Image src="/image/logo.png" alt="Logo" width={50} height={50} />
+        </figure>
+        <nav>
+          <svg
+            className="w-6 h-6 text-white"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+          >
+            <path d="M5 7h14M5 12h14M5 17h10" />
+          </svg>
+        </nav>
+      </header>
+      <section className="relative slider h-[100vh] w-full overflow-hidden">
+        <div className="relative w-full h-full">
+          {slides.map((slide, index) => (
+            <motion.div
+              key={slide.id}
+              className={`absolute inset-0 flex justify-center items-center transition-opacity duration-1000 ${
+                activeSlide === index ? "opacity-100" : "opacity-0 pointer-events-none"
+              }`}
+            >
+              <motion.div
+                className="relative flex items-center justify-center"
+                initial={{ rotate: -60 }}
+                animate={{ rotate: activeSlide === index ? 0 : 60 }}
+                transition={{ duration: 1 }}
+              >
+                {/* Outer Circle */}
+                <motion.div
+                  className="absolute w-[80vmin] h-[80vmin] rounded-full transition-transform duration-1000"
+                  initial={{ scale: 0.7 }}
+                  animate={{ scale: activeSlide === index ? 1 : 0.7 }}
+                  transition={{ duration: 1 }}
                 >
-                  <span className="bg-clip-text text-transparent bg-gradient-to-r from-neutral-500 to-neutral-600  md:text-center font-sans group-hover:bg-gradient-to-r group-hover:from-black goup-hover:to-black">
-                    Start For Free Today
-                  </span>
-                </Button>
-                <h1 className="text-5xl md:text-8xl  bg-clip-text text-transparent bg-gradient-to-b from-white to-neutral-600 font-sans font-bold">
-                  Automate Your Work With Fuzzie
-                </h1>
-              </div>
-            }
-          />
+                  {/* SVG Divided Circle */}
+                  <svg
+                    className="absolute w-full h-full"
+                    viewBox="0 0 100 100"
+                    style={{ transform: "rotate(-90deg)" }}
+                  >
+                    <path
+                      d="M50 50 L50 0 A50 50 0 0 1 100 50 Z"
+                      fill="rgba(255, 0, 0, 0.3)"
+                      onClick={() => setSlide(0)}
+                      className="cursor-pointer"
+                    />
+                    <path
+                      d="M50 50 L100 50 A50 50 0 0 1 50 100 Z"
+                      fill="rgba(0, 255, 0, 0.3)"
+                      onClick={() => setSlide(1)}
+                      className="cursor-pointer"
+                    />
+                    <path
+                      d="M50 50 L50 100 A50 50 0 0 1 0 50 Z"
+                      fill="rgba(0, 0, 255, 0.3)"
+                      onClick={() => setSlide(2)}
+                      className="cursor-pointer"
+                    />
+                    <path
+                      d="M50 50 L50 100 A50 50 0 0 1 0 50 Z"
+                      fill="rgba(255, 255, 0, 0.3)"
+                      onClick={() => setSlide(3)}
+                      className="cursor-pointer"
+                    />
+                    <path
+                      d="M50 50 L50 100 A50 50 0 0 1 0 50 Z"
+                      fill="rgba(255, 165, 0, 0.3)"
+                      onClick={() => setSlide(4)}
+                      className="cursor-pointer"
+                    />
+                    <path
+                      d="M50 50 L50 100 A50 50 0 0 1 0 50 Z"
+                      fill="rgba(255, 20, 147, 0.3)"
+                      onClick={() => setSlide(5)}
+                      className="cursor-pointer"
+                    />
+                  </svg>
+                </motion.div>
+                {/* Inner Circle */}
+                <motion.div
+                  className="absolute w-[40vmin] h-[40vmin] rounded-full bg-cover bg-center border-4 border-white transition-transform duration-1000"
+                  style={{ backgroundImage: `url(${slide.imageUrl})` }}
+                  initial={{ scale: 0.4 }}
+                  animate={{ scale: activeSlide === index ? 1 : 0.4 }}
+                  transition={{ duration: 1 }}
+                />
+              </motion.div>
+              <motion.div className="absolute top-[20%] left-[50%] transform -translate-x-[50%] text-center">
+                <motion.h2
+                  className="font-bebas text-[10vw] leading-none"
+                  initial={{ translateY: "-100%" }}
+                  animate={{ translateY: activeSlide === index ? "0%" : "100%" }}
+                  transition={{ duration: 1 }}
+                >
+                  {slide.title}
+                </motion.h2>
+                <motion.p className="text-lg">{slide.description}</motion.p>
+                <motion.p className="text-lg">{slide.secondaryDescription}</motion.p>
+              </motion.div>
+            </motion.div>
+          ))}
+        </div>
+        <div className="absolute bottom-10 left-[50%] translate-x-[-50%] flex justify-between w-[90%] max-w-[1200px]">
+          <button
+            onClick={handlePrev}
+            disabled={activeSlide === 0}
+            className={`p-4 bg-gray-600 rounded-full ${
+              activeSlide === 0 ? "opacity-0 pointer-events-none" : ""
+            }`}
+          >
+            <svg
+              className="w-6 h-6 text-white"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M5 12h14M5 12l-4-4m4 4-4 4"
+              />
+            </svg>
+          </button>
+          <button
+            onClick={handleNext}
+            disabled={activeSlide === slides.length - 1}
+            className={`p-4 bg-gray-600 rounded-full ${
+              activeSlide === slides.length - 1
+                ? "opacity-0 pointer-events-none"
+                : ""
+            }`}
+          >
+            <svg
+              className="w-6 h-6 text-white"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M19 12H5M19 12l-4 4m4-4l-4-4"
+              />
+            </svg>
+          </button>
         </div>
       </section>
-      <InfiniteMovingCards
-        className="md:mt-[18rem] mt-[-100px]"
-        items={clients}
-        direction="right"
-        speed="slow"
-      />
-      <section>
-        <HeroParallax products={products}></HeroParallax>
-      </section>
-      <section className="mt-[-500px] flex justify-center">
-        <LampComponent />
-        <div className="flex flex-wrap items-center justify-center flex-col md:flex-row gap-8 -mt-72">
-          <CardContainer className="inter-var ">
-            <CardBody className="bg-gray-50 relative group/card  dark:hover:shadow-2xl dark:hover:shadow-neutral-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-full md:!w-[350px] h-auto rounded-xl p-6 border">
-              <CardItem
-                translateZ="50"
-                className="text-xl font-bold text-neutral-600 dark:text-white "
-              >
-                Hobby
-                <h2 className="text-6xl ">$0</h2>
-              </CardItem>
-              <CardItem
-                translateZ="60"
-                className="text-neutral-500 text-sm max-w-sm mt-2 dark:text-neutral-300"
-              >
-                Get a glimpse of what our software is capable of. Just a heads
-                up {"you'll"} never leave us after this!
-                <ul className="my-4 flex flex-col gap-2">
-                  <li className="flex items-center gap-2">
-                    <CheckIcon />3 Free automations
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckIcon />
-                    100 tasks per month
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckIcon />
-                    Two-step Actions
-                  </li>
-                </ul>
-              </CardItem>
-              <div className="flex justify-between items-center mt-8">
-                <CardItem
-                  translateZ={20}
-                  as="button"
-                  className="px-4 py-2 rounded-xl text-xs font-normal dark:text-white"
-                >
-                  Try now →
-                </CardItem>
-                <CardItem
-                  translateZ={20}
-                  as="button"
-                  className="px-4 py-2 rounded-xl bg-black dark:bg-white dark:text-black text-white text-xs font-bold"
-                >
-                  Get Started Now
-                </CardItem>
-              </div>
-            </CardBody>
-          </CardContainer>
-          <CardContainer className="inter-var ">
-            <CardBody className="bg-gray-50 relative group/card  dark:hover:shadow-2xl dark:hover:shadow-neutral-500/[0.1] dark:bg-black dark:border-[#E2CBFF] border-black/[0.1] w-full md:!w-[350px] h-auto rounded-xl p-6 border">
-              <CardItem
-                translateZ="50"
-                className="text-xl font-bold text-neutral-600 dark:text-white "
-              >
-                Pro Plan
-                <h2 className="text-6xl ">$29</h2>
-              </CardItem>
-              <CardItem
-                translateZ="60"
-                className="text-neutral-500 text-sm max-w-sm mt-2 dark:text-neutral-300"
-              >
-                Get a glimpse of what our software is capable of. Just a heads
-                up {"you'll"} never leave us after this!
-                <ul className="my-4 flex flex-col gap-2">
-                  <li className="flex items-center gap-2">
-                    <CheckIcon />3 Free automations
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckIcon />
-                    100 tasks per month
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckIcon />
-                    Two-step Actions
-                  </li>
-                </ul>
-              </CardItem>
-              <div className="flex justify-between items-center mt-8">
-                <CardItem
-                  translateZ={20}
-                  as="button"
-                  className="px-4 py-2 rounded-xl text-xs font-normal dark:text-white"
-                >
-                  Try now →
-                </CardItem>
-                <CardItem
-                  translateZ={20}
-                  as="button"
-                  className="px-4 py-2 rounded-xl bg-black dark:bg-white dark:text-black text-white text-xs font-bold"
-                >
-                  Get Started Now
-                </CardItem>
-              </div>
-            </CardBody>
-          </CardContainer>
-          <CardContainer className="inter-var ">
-            <CardBody className="bg-gray-50 relative group/card  dark:hover:shadow-2xl dark:hover:shadow-neutral-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-full md:!w-[350px] h-auto rounded-xl p-6 border">
-              <CardItem
-                translateZ="50"
-                className="text-xl font-bold text-neutral-600 dark:text-white "
-              >
-                Unlimited
-                <h2 className="text-6xl ">$99</h2>
-              </CardItem>
-              <CardItem
-                translateZ="60"
-                className="text-neutral-500 text-sm max-w-sm mt-2 dark:text-neutral-300"
-              >
-                Get a glimpse of what our software is capable of. Just a heads
-                up {"you'll"} never leave us after this!
-                <ul className="my-4 flex flex-col gap-2">
-                  <li className="flex items-center gap-2">
-                    <CheckIcon />3 Free automations
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckIcon />
-                    100 tasks per month
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckIcon />
-                    Two-step Actions
-                  </li>
-                </ul>
-              </CardItem>
-              <div className="flex justify-between items-center mt-8">
-                <CardItem
-                  translateZ={20}
-                  as="button"
-                  className="px-4 py-2 rounded-xl text-xs font-normal dark:text-white"
-                >
-                  Try now →
-                </CardItem>
-                <CardItem
-                  translateZ={20}
-                  as="button"
-                  className="px-4 py-2 rounded-xl bg-black dark:bg-white dark:text-black text-white text-xs font-bold"
-                >
-                  Get Started Now
-                </CardItem>
-              </div>
-            </CardBody>
-          </CardContainer>
-        </div>
-      </section>
-    
-      </main>
+    </main>
   );
 }
+

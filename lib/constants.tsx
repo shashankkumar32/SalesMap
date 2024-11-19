@@ -140,10 +140,9 @@ export const EditorCanvasDefaultCardTypes = {
 }
 export const menuOptions = [
     { name: 'Dashboard', Component: Home, href: '/dashboard' },
-    { name: 'Workflows', Component: Workflows, href: '/workflows' },
-    { name: 'Settings', Component: Settings, href: '/settings' },
+    { name: 'Menu', Component: Category, href: '/menu' },
     { name: 'Connections', Component: Category, href: '/connections' },
-    { name: 'Billing', Component: Payment, href: '/billing' },
-    { name: 'Templates', Component: Templates, href: '/templates' },
-    { name: 'Logs', Component: Logs, href: '/logs' },
+    { name: 'Billing', Component: Payment, href: '/dashboard' },
+
+    { name: 'Content', Component: Logs, href: '/connections' },
   ]
