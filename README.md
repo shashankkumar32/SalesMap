@@ -36,7 +36,7 @@ Here is the complete content for your README.md file. You can copy and paste thi
 
 markdown
 Copy code
-# Composite UI Compose
+# NEXTJS POS
 
 [![Deployed on Vercel](https://vercel.com/button)](https://c-omposite-ui-compose.vercel.app/)
 
