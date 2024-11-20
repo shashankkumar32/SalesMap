@@ -99,3 +99,13 @@ Next.js: Framework for server-rendered React applications.
 React: JavaScript library for building user interfaces.
 CSS/SCSS: For styling the components.
 Vercel: Deployment and hosting platform.
+## Screenshot Example
+
+### Home Page
+
+![ Page-preview](public/1.png)
+![Page-preview](public/2.png)
+![Page-preview](public/3.png)
+![Page-preview](public/4.png)
+![Page-preview](public/5.png)
+![Page-preview](public/6.png)
