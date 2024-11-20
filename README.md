@@ -1,4 +1,4 @@
-# Composite UI Compose
+# NEXTJS POS
 
 [![Deployed on Vercel](https://vercel.com/button)](https://c-omposite-ui-compose.vercel.app/)
 
@@ -101,9 +101,9 @@ CSS/SCSS: For styling the components.
 Vercel: Deployment and hosting platform.
 ## Screenshot Example
 
-### Home Page
+### PAGE PREVIEW
 
-![ Page-preview](public/1.png)
+![Page-preview](public/1.png)
 ![Page-preview](public/2.png)
 ![Page-preview](public/3.png)
 ![Page-preview](public/4.png)
