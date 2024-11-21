@@ -139,7 +139,7 @@ export const EditorCanvasDefaultCardTypes = {
   },
 }
 export const menuOptions = [
-    { name: 'Dashboard', Component: Home, href: '/dashboard' },
+    { name: 'Dashboard', Component: Home, href: '/home' },
     { name: 'Menu', Component: Category, href: '/menu' },
     { name: 'Connections', Component: Category, href: '/connections' },
     { name: 'Billing', Component: Payment, href: '/dashboard' },
