@@ -1,14 +1,7 @@
 'use client'
 import Image from "next/image";
 import Navbar from "./components/global/navbar";
-import { ContainerScroll } from "./components/global/custom-scroll-animation";
-import { Button } from "@/components/ui/button";
-import { CardBody, CardContainer, CardItem } from "./components/global/3d-cards";
-import { CheckIcon } from "lucide-react";
-import { LampComponent } from "./components/global/lamp";
-import { InfiniteMovingCards } from "./components/global/infinite-moving-cards";
-import { HeroParallax } from "./components/global/HeroParallax";
-import { clients, products } from "@/lib/constants";
+
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 export default function Home() {
