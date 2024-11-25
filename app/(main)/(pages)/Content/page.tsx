@@ -7,6 +7,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import 'reactflow/dist/style.css';
 import { Separator } from '@/components/ui/separator';
 import { Circles } from 'react-loader-spinner';
+import { useRouter } from "next/navigation";
 interface Item {
   _id: string;
   itemName: string;
@@ -26,7 +27,7 @@ const Content = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [newItemNames, setNewItemNames] = useState<{ [key: string]: string }>({}); // State for each category's input
-
+  const router = useRouter();
   const fetchCategories = async () => {
     const token = localStorage.getItem('token');
     try {
@@ -35,9 +36,12 @@ const Content = () => {
       });
       setCategories(response.data);
       constructFlow(response.data); // Create React Flow nodes and edges
-    } catch (err) {
+    } catch (error: any) {
       setError('Failed to fetch categories');
-    } finally {
+      if (error.response && error.response.status === 401) {
+        router.push('/auth');
+      }
+    }  finally {
       setLoading(false);
     }
   };
@@ -202,7 +206,7 @@ const Content = () => {
   };
 
   
-if (loading) {
+if (loading||error) {
   return (
     <div style={{
       position: 'fixed',
@@ -225,7 +229,7 @@ if (loading) {
     </div>
   );
 }
-  if (error) return <p className="text-red-500">{error}</p>;
+  // if (error) return <p className="text-red-500">{error}</p>;
 
   return (
     <div className="p-6 max-w-6xl mx-auto space-y-6">
