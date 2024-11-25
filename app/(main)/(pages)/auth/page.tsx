@@ -1,6 +1,6 @@
-
 'use client';
 import { useState } from "react";
+import { useRouter } from "next/navigation"; // For routing in Next.js
 import axios from "axios";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,9 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
-
-
-
+import { Circles } from "react-loader-spinner";
 
 const API_URL = "https://pos-backend-jwt-auth.onrender.com/api/auth";
 
@@ -25,41 +23,70 @@ const TabsDemo = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [authMessage, setAuthMessage] = useState("");
-
+  const [loading, setLoading] = useState(false); // To track loading status
+  const router = useRouter(); // Next.js router for navigation
 
   const handleLogin = async () => {
+    setLoading(true); // Start loading
     try {
       const response = await axios.post(`${API_URL}/login`, {
         username,
         password,
       });
       localStorage.setItem("token", response.data.token);
-      // localStorage.setItem("userId", response.data.userId);
-      // Dispatch setUser action to store user info in Redux
-      // dispatch(setUser({ userId: response.data.userId, username }));
       setAuthMessage("Login successful");
+      router.push("/home"); // Redirect to the /home page
     } catch (error) {
       setAuthMessage("Login failed");
       console.error("Login error", error);
+    } finally {
+      setLoading(false); // End loading
     }
   };
 
   const handleRegister = async () => {
+    setLoading(true); // Start loading
     try {
       const response = await axios.post(`${API_URL}/register`, {
         username,
         password,
       });
-      console.log(response)
+      console.log(response);
       setAuthMessage("Registration successful, please log in.");
     } catch (error) {
       setAuthMessage("Registration failed");
       console.error("Registration error", error);
+    } finally {
+      setLoading(false); // End loading
     }
   };
 
   return (
     <div className="w-full flex justify-center">
+      {loading && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            // backgroundColor: "rgba(255, 255, 255, 0.8)",
+            zIndex: 9999,
+          }}
+        >
+          <Circles
+            height="80"
+            width="80"
+            color="#BD8AFF"
+            ariaLabel="loading-indicator"
+          />
+        </div>
+      )}
+
       <Tabs defaultValue="account" className="w-[400px]">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="login">Login</TabsTrigger>
@@ -93,7 +120,9 @@ const TabsDemo = () => {
               <div className="text-red-500">{authMessage}</div>
             </CardContent>
             <CardFooter>
-              <Button onClick={handleLogin}>Login</Button>
+              <Button onClick={handleLogin} disabled={loading}>
+                Login
+              </Button>
             </CardFooter>
           </Card>
         </TabsContent>
@@ -133,7 +162,9 @@ const TabsDemo = () => {
               <div className="text-red-500">{authMessage}</div>
             </CardContent>
             <CardFooter>
-              <Button onClick={handleRegister}>Register</Button>
+              <Button onClick={handleRegister} disabled={loading}>
+                Register
+              </Button>
             </CardFooter>
           </Card>
         </TabsContent>
@@ -143,4 +174,3 @@ const TabsDemo = () => {
 };
 
 export default TabsDemo;
-

@@ -5,7 +5,7 @@ import MobileBillsStack from './inc/mobiletable';
 
 type Props = {};
 
-const DashboardPage: React.FC<Props> = () => {
+const Billing: React.FC<Props> = () => {
   const [isMobile, setIsMobile] = useState<boolean>(false);
 
   useEffect(() => {
@@ -33,4 +33,4 @@ const DashboardPage: React.FC<Props> = () => {
   );
 };
 
-export default DashboardPage;
+export default Billing;

@@ -9,6 +9,7 @@ import { FloatingDock } from "../components/navbar/mobilenav";
 import Navbar from './../components/global/navbar';
 import { IconBrandGithub, IconBrandX, IconExchange, IconHome, IconNewSection, IconTerminal2 } from "@tabler/icons-react";
 import ModalProvider from "@/provider/model-provider";
+import { Circles } from "react-loader-spinner";
 
 type Props = { children: React.ReactNode };
 
@@ -118,7 +119,27 @@ const Layout = ({ children }: Props) => {
 
   // Show a loading state while checking authentication
   if (loading) {
-    return <div>Loading...</div>;
+    return <div
+    style={{
+      position: "fixed",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      // backgroundColor: "rgba(255, 255, 255, 0.8)",
+      zIndex: 9999,
+    }}
+  >
+    <Circles
+      height="80"
+      width="80"
+      color="#BD8AFF"
+      ariaLabel="loading-indicator"
+    />
+  </div>;
   }
 
   return (
