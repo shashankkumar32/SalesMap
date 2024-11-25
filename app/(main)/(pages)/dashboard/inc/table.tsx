@@ -1,11 +1,10 @@
+
 'use client';
 
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation'; // For navigation
 import { Input } from '@/components/ui/input'; // Assuming you have the ShadCN Input component
-import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-// import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from '@/components/ui/dialog'; // Modal components
 
 interface CartItem {
   itemName: string;
@@ -26,6 +25,7 @@ const BillsStack: React.FC = () => {
   const [filterDateValue, setFilterDateValue] = useState<string>('');
   const [filteredBills, setFilteredBills] = useState<Bill[]>([]);
   const [selectedBill, setSelectedBill] = useState<Bill | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   // Fetch bills from the API
   useEffect(() => {
@@ -45,6 +45,8 @@ const BillsStack: React.FC = () => {
         if (error.response && error.response.status === 401) {
           router.push('/auth');
         }
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -66,98 +68,118 @@ const BillsStack: React.FC = () => {
   }, [filterIdValue, filterDateValue, bills]);
 
   return (
-    <div className="flex flex-col items-center p-6">
-      <h1 className="text-2xl font-bold mb-6">Bills</h1>
+    <div className="flex h-800px ">
+      {/* Left Section: Bills List */}
+      <div className="w-1/3 border-r p-4 overflow-hidden">
+        {/* Filter Section */}
+        <div className="mb-4  min-w-[300px]">
+          <Input
+            placeholder="Filter by Bill ID..."
+            value={filterIdValue}
+            onChange={(e) => setFilterIdValue(e.target.value)}
+            className="mb-2"
+          />
+          <Input
+            type="date"
+            value={filterDateValue}
+            onChange={(e) => setFilterDateValue(e.target.value)}
+          />
+        </div>
 
-      {/* Filters */}
-      <div className="w-full flex flex-col sm:flex-row gap-4 mb-4">
-        {/* Filter by Bill ID */}
-        <Input
-          placeholder="Filter by Bill ID..."
-          value={filterIdValue}
-          onChange={(e) => setFilterIdValue(e.target.value)}
-          className="sm:max-w-sm"
-        />
-
-        {/* Filter by Date */}
-        <Input
-          type="date"
-          value={filterDateValue}
-          onChange={(e) => setFilterDateValue(e.target.value)}
-          className="sm:max-w-sm"
-        />
-      </div>
-
-      {/* Bills Stack */}
-      <div className="flex flex-col w-full gap-4">
-        {filteredBills.length ? (
-          filteredBills.map((bill) => (
-            <div
-              key={bill._id}
-              className="p-4 border rounded-md shadow-md hover:shadow-lg transition cursor-pointer"
-              onClick={() => setSelectedBill(bill)}
-            >
-              <div className="flex justify-between items-center">
-                <div>
-                  <p className="text-lg font-semibold">Bill ID: {bill._id}</p>
-                  <p className="text-sm text-gray-500">
-                    Date: {new Date(bill.createdAt).toLocaleDateString()}
-                  </p>
-                </div>
-                <p className="text-lg font-bold">
-                  $
-                  {bill.cartItems.reduce(
-                    (sum, item) => sum + item.totalAmount,
-                    0
-                  )}
+        {/* Bills List with Scroll */}
+        <div className="overflow-y-auto max-h-[500px]">
+          {loading ? (
+            <p className="text-gray-500 text-center">Loading orders...</p>
+          ) : filteredBills.length ? (
+            filteredBills.map((bill) => (
+              <div
+                key={bill._id}
+                className={`p-4 mb-2 border rounded-md  w-[300px] cursor-pointer ${
+                  selectedBill?._id === bill._id
+                    ? 'bg-[#7540A9] text-white'
+                    : 'hover:bg-[#7540A9] hover:text-white'
+                }`}
+                onClick={() => setSelectedBill(bill)}
+              >
+                <p className="font-semibold truncate">Bill ID: {bill._id}</p>
+                <p className="text-sm text-gray-300">
+                  Date: {new Date(bill.createdAt).toLocaleDateString()}
                 </p>
               </div>
-            </div>
-          ))
-        ) : (
-          <p className="text-gray-500 text-center">No results found.</p>
-        )}
+            ))
+          ) : (
+            <p className="text-gray-500 text-center">No results found.</p>
+          )}
+        </div>
       </div>
 
-      {/* Modal to View Items */}
-      {selectedBill && (
-        <Dialog open={!!selectedBill} onOpenChange={() => setSelectedBill(null)}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Bill Details</DialogTitle>
-              <DialogClose />
-            </DialogHeader>
-            <div className="mt-4">
-              <p className="text-sm">
-                <strong>Bill ID:</strong> {selectedBill._id}
-              </p>
-              <p className="text-sm">
-                <strong>Date:</strong>{' '}
-                {new Date(selectedBill.createdAt).toLocaleDateString()}
-              </p>
-              <h3 className="text-lg font-semibold mt-4">Items:</h3>
-              <ul className="mt-2 space-y-2">
-                {selectedBill.cartItems.map((item, index) => (
-                  <li
-                    key={index}
-                    className="p-2 border rounded-md flex justify-between"
-                  >
-                    <div>
-                      <p className="font-semibold">{item.itemName}</p>
-                      <p className="text-sm text-gray-500">
-                        Quantity: {item.quantity}
-                      </p>
-                    </div>
-                    <p className="font-bold">
-                      ${item.totalAmount.toFixed(2)}
-                    </p>
-                  </li>
-                ))}
-              </ul>
+      {/* Right Section: Selected Bill Details */}
+      <div className="w-2/3 p-4 overflow-hidden  min-w-[500px]">
+        {selectedBill ? (
+          <>
+            {/* Header */}
+            <div
+              className="p-4 rounded-md mb-4 flex items-center"
+              style={{
+                backgroundColor: '#BD8AFF',
+                height: '100px',
+                minWidth: '500px',
+              }}
+            >
+              <h2 className="text-xl font-bold text-white whitespace-nowrap mr-4">
+                Order ID:
+              </h2>
+              <span className="text-lg font-medium text-white break-words  overflow-x-auto min-w-[500px]">
+                {selectedBill._id}
+              </span>
             </div>
-          </DialogContent>
-        </Dialog>
-      )}
+
+            {/* Items */}
+            <h3 className="text-lg font-semibold mb-2">Items:</h3>
+            <ul className="space-y-2">
+              {selectedBill.cartItems.map((item, index) => (
+                <li
+                  key={index}
+                  className="p-4 border rounded-md flex justify-between items-center"
+                >
+                  <div>
+                    <p className="font-semibold">{item.itemName}</p>
+                    <p className="text-sm text-gray-500">
+                      Quantity: {item.quantity}
+                    </p>
+                  </div>
+                  <p className="font-bold">Rs {item.totalAmount.toFixed(2)}</p>
+                </li>
+              ))}
+            </ul>
+          </>
+        ) : loading ? (
+          <p className="text-gray-500 text-center">Loading...</p>
+        ) : (<>
+          <div
+              className="p-4 rounded-md mb-4 flex items-center"
+              style={{
+                backgroundColor: '#BD8AFF',
+                height: '100px',
+                minWidth: '500px',
+              }}
+              >
+              <h2 className="text-xl font-bold text-white whitespace-nowrap mr-4">
+                Order ID:
+              </h2>
+              <span className="text-lg font-medium text-white break-words  overflow-x-auto min-w-[500px]">
+                
+              </span>
+            </div>
+
+          <div className="flex items-center justify-center h-full  min-w-[500px]">
+            <p className="text-gray-500 text-center">
+              Select an order to view its details.
+            </p>
+          </div>
+              </>
+        )}
+      </div>
     </div>
   );
 };
