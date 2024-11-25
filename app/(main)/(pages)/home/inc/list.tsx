@@ -6,19 +6,8 @@ interface Order {
   totalQuantity: number;
 }
 
-// Function to generate a random gradient
-const generateRandomGradient = () => {
-  const colors = [
-    'from-pink-500 to-cyan-500',
-    'from-blue-500 to-green-500',
-    'from-green-500 to-lime-500',
-  ];
-  return colors[Math.floor(Math.random() * colors.length)];
-};
-
 const RecentOrders: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
-  const [borderGradient, setBorderGradient] = useState<string>(generateRandomGradient());
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : '';
 
   const fetchOrders = async () => {
@@ -38,30 +27,49 @@ const RecentOrders: React.FC = () => {
 
   return (
     <>
-      {/* Top blank section */}
-      <div className="h-12"></div>
+      {/* Padded "Sold Items" Section */}
+      <div
+        className="text-center py-2 px-4 font-bold text-xl rounded-lg shadow-md mb-4"
+        style={{
+          // backgroundColor: 'black', // Default light mode background
+          color: 'white', // Default light mode text color
+        }}
+      >
+        <p className="dark:bg-grey  rounded-lg px-6  shadow-lg inline-block">
+          Sold Items
+        </p>
+      </div>
 
       {/* Recent Orders Section */}
       <div className="flex flex-col">
-        <h2 className="text-xl font-bold mb-4">Most Sold</h2>
+        
 
-        {/* Scrollable container with gradient border */}
+        {/* Scrollable container with consistent gradient border */}
         <div
-          className={`border-l-8 ${borderGradient} pl-4 pr-6 space-y-4 overflow-y-auto max-h-[400px]`}
-          style={{ backgroundClip: 'padding-box' }}
+          className="p-4 space-y-4 overflow-y-auto max-h-[400px] rounded-lg shadow-md"
+          style={{
+            border: '4px solid',
+            borderRadius: '8px',
+            borderImage: 'linear-gradient(90deg, #BD8AFF, #7540A9, #C8C7FF) 1',
+            // backgroundColor: 'white',
+          }}
         >
           {orders.length > 0 ? (
             orders.map((order) => (
               <div
                 key={order._id}
-                className="flex justify-between items-center p-4 rounded-lg"
+                className="flex justify-between items-center p-4 rounded-lg bg-gray-50 dark:bg-gray-700"
               >
-                <span className="text-sm font-medium">{order._id}</span>
-                <span className="text-sm font-semibold">Quantity: {order.totalQuantity}</span>
+                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  {order._id}
+                </span>
+                <span className="text-sm font-semibold text-gray-900 dark:text-white">
+                  Quantity: {order.totalQuantity}
+                </span>
               </div>
             ))
           ) : (
-            <p>No recent orders available.</p>
+            <p className="text-gray-600 dark:text-gray-400">No recent orders available.</p>
           )}
         </div>
       </div>

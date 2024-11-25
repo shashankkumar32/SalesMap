@@ -21,13 +21,20 @@ const MenuOptions = (props: Props) => {
 
   return (
     <nav className=" dark:bg-black h-screen overflow-scroll  justify-between flex items-center flex-col  gap-10 py-6 px-2">
-      <div className="flex items-center justify-center flex-col gap-8">
+      <div className="flex items-center justify-center flex-col gap-8 ">
+        <div className="flex items-center justify-center flex-col gap-8 border rounded-lg bg-white  ">
+
         <Link
           className="flex font-bold flex-row "
           href="/"
         >
-          POS
+       <img
+        src="/logo.png" // Path to the logo in the public folder
+        alt="Logo"
+        className="h-8 w-8  rounded-lg " // Adjust height and width as needed
+      />
         </Link>
+        </div>
         <TooltipProvider>
           {menuOptions.map((menuItem:any) => (
             <ul key={menuItem.name}>
