@@ -10,7 +10,7 @@ import Navbar from './../components/global/navbar';
 import { IconBrandGithub, IconBrandX, IconExchange, IconHome, IconNewSection, IconTerminal2 } from "@tabler/icons-react";
 import ModalProvider from "@/provider/model-provider";
 import { Circles } from "react-loader-spinner";
-
+import Head from 'next/head';
 type Props = { children: React.ReactNode };
 
 
@@ -142,23 +142,39 @@ const Layout = ({ children }: Props) => {
   </div>;
   }
 
-  return (
+  return (<>
+   <Head>
+        <title>app
+
+          
+        {/* Open Graph Image (for social media sharing) */}
+        <meta property="og:image" content="/logo.png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+
+        {/* Favicon (using an image) */}
+        {/* <link rel="icon" href="/favicon.ico" /> */}
+
+        {/* Meta Tags for Better SEO */}
+        </title>
+        <meta name="description" content="This is a Next.js app with a custom logo" />
+      </Head>
     <div className="flex overflow-hidden h-screen">
        <Provider store={store}>
         <ModalProvider>
      {/* {isAuthenticated()? */}  
      {!isMobileView ? (
-          //  <div className="flex items-center justify-center h-[35rem] w-full">
-          <Sidebar/>
-        //  </div>
+       //  <div className="flex items-center justify-center h-[35rem] w-full">
+       <Sidebar/>
+       //  </div>
       ) : null}
       <div className="w-full">
         <InfoBar />
         {isMobileView ? (
           //  <div className="flex items-center justify-center h-[35rem] w-full">
           <FloatingDock items={links}/>
-        //  </div>
-      ) : null}
+          //  </div>
+        ) : null}
         {children}
         <div className="sticky-bottom  flex">
 
@@ -168,6 +184,7 @@ const Layout = ({ children }: Props) => {
       </ModalProvider>
       </Provider>
     </div>
+        </>
   );
 };
 

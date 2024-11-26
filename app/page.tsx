@@ -82,7 +82,7 @@ export default function Home() {
        <Navbar/>
       <header className="relative z-10 flex items-center justify-between w-full max-w-screen-xl p-6 mx-auto">
         <figure className="logo">
-          <Image src="/image/logo.png" alt="Logo" width={50} height={50} />
+          <Image src="/logo.png" alt="Logo" width={50} height={50} />
         </figure>
         <nav>
           <svg
