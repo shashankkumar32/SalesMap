@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     apple: "/logo.png",
   }
 }
-
+///for commit 
 
 export default function RootLayout({
   children,
