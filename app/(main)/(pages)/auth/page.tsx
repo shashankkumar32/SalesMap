@@ -61,6 +61,12 @@ const TabsDemo = () => {
     }
   };
 
+  const handleDummyLogin = () => {
+    // Fill in dummy credentials
+    setUsername("shashankthestar3@gmail.com");
+    setPassword("shashank");
+  };
+
   return (
     <div className="w-full flex justify-center">
       {loading && (
@@ -74,7 +80,6 @@ const TabsDemo = () => {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            // backgroundColor: "rgba(255, 255, 255, 0.8)",
             zIndex: 9999,
           }}
         >
@@ -119,9 +124,12 @@ const TabsDemo = () => {
               </div>
               <div className="text-red-500">{authMessage}</div>
             </CardContent>
-            <CardFooter>
+            <CardFooter className="flex justify-between items-center">
               <Button onClick={handleLogin} disabled={loading}>
                 Login
+              </Button>
+              <Button onClick={handleDummyLogin} className="ml-4" disabled={loading}>
+                Use Dummy Credentials
               </Button>
             </CardFooter>
           </Card>
