@@ -69,8 +69,8 @@ const BillsTable: React.FC = () => {
               <tr key={item._id}>
                 <td className="py-2">{item.name}</td>
                 <td className="py-2 text-right">{item.quantity}</td>
-                <td className="py-2 text-right">${item.price.toFixed(2)}</td>
-                <td className="py-2 text-right">${(item.price * item.quantity).toFixed(2)}</td>
+                <td className="py-2 text-right">Rs{item.price.toFixed(2)}</td>
+                <td className="py-2 text-right">Rs{(item.price * item.quantity).toFixed(2)}</td>
               </tr>
             ))}
             <tr>

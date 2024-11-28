@@ -22,10 +22,10 @@ const PlaceOrderButton = () => {
   const handleClick = () => {
     setOpen(
       <CustomModal
-        title="Create a Workflow Automation"
-        subheading="Workflows are a powerfull that help you automate tasks."
+        title="Bill created"
+        subheading="verify before final bill generataion"
       >
-        fkjdkf 
+      
         <BillForm />
       </CustomModal>
     )
